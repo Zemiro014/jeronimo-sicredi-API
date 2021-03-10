@@ -10,14 +10,14 @@ sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+  	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	
-	// https://mvnrepository.com/artifact/org.mongodb/mongodb-driver
-	implementation group: 'org.mongodb', name: 'mongodb-driver', version: '3.6.3'	
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'	
 }
 
 test {
