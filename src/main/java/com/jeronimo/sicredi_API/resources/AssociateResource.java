@@ -33,8 +33,16 @@ public class AssociateResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<AssociateDTO> findAssociateById(@PathVariable String id){
+		
+		Associate obj_associate = associateService.findById(id);
+		
+		return ResponseEntity.ok().body(new AssociateDTO(obj_associate));
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<AssociateDTO> findAssociateById(@RequestBody AssociateDTO objDtoFromRequest){
+	public ResponseEntity<AssociateDTO> insertAssociateById(@RequestBody AssociateDTO objDtoFromRequest){
 		
 		Associate obj_associate = associateService.convertAssociateDtoFromAssociate(objDtoFromRequest);
 		obj_associate = associateService.insertAssociate(obj_associate);
@@ -43,11 +51,11 @@ public class AssociateResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<AssociateDTO> insertAssociateById(@PathVariable String id){
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<AssociateDTO> deleteAssociate(@PathVariable String id){
 		
-		Associate obj_associate = associateService.findById(id);
+		associateService.deleteAssociate(id);
 		
-		return ResponseEntity.ok().body(new AssociateDTO(obj_associate));
+		return ResponseEntity.noContent().build();
 	}
 }

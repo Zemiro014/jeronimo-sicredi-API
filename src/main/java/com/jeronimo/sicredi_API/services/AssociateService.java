@@ -31,6 +31,11 @@ public class AssociateService {
 		return associateRepository.insert(obj);
 	}
 	
+	public void deleteAssociate(String id) {
+		findById(id);
+		associateRepository.deleteById(id);
+	}
+	
 	public Associate convertAssociateDtoFromAssociate(AssociateDTO obj_Dto) {
 		return new Associate(obj_Dto.getId(),obj_Dto.getName(),obj_Dto.getEmail());		
 	}
