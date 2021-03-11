@@ -58,4 +58,13 @@ public class AssociateResource {
 		
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<AssociateDTO> updateAssociate(@RequestBody AssociateDTO objDtoFromRequest, @PathVariable String id){
+		
+		Associate obj_associate = associateService.convertAssociateDtoFromAssociate(objDtoFromRequest);
+		obj_associate.setId(id);
+		obj_associate = associateService.updateAssociateData(obj_associate);
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -36,6 +36,17 @@ public class AssociateService {
 		associateRepository.deleteById(id);
 	}
 	
+	public Associate updateAssociateData(Associate obj_ReceivedFromRequest) {
+		Associate obj_toBeUpdated = findById(obj_ReceivedFromRequest.getId());
+		updateExistentAssociateDate(obj_toBeUpdated, obj_ReceivedFromRequest);
+		return associateRepository.save(obj_toBeUpdated);
+	}
+	
+	private void updateExistentAssociateDate(Associate obj_toBeUpdated, Associate obj_ReceivedFromRequest) {
+		obj_toBeUpdated.setName(obj_ReceivedFromRequest.getName());
+		obj_toBeUpdated.setEmail(obj_ReceivedFromRequest.getEmail());		
+	}
+
 	public Associate convertAssociateDtoFromAssociate(AssociateDTO obj_Dto) {
 		return new Associate(obj_Dto.getId(),obj_Dto.getName(),obj_Dto.getEmail());		
 	}
