@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Associate;
+import com.jeronimo.sicredi_API.dto.AssociateDTO;
 import com.jeronimo.sicredi_API.repositories.AssociateRepository;
 import com.jeronimo.sicredi_API.services.eception.ObjectNotFoundException;
 
@@ -24,5 +25,13 @@ public class AssociateService {
 	public Associate findById(String id) {
 		Optional<Associate> obj = associateRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("O Associado especificado não existe no nosso sistema"));
+	}
+	
+	public Associate insertAssociate(Associate obj) {
+		return associateRepository.insert(obj);
+	}
+	
+	public Associate convertAssociateDtoFromAssociate(AssociateDTO obj_Dto) {
+		return new Associate(obj_Dto.getId(),obj_Dto.getName(),obj_Dto.getEmail());		
 	}
 }
