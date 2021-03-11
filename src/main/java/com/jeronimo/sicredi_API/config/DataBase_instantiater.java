@@ -26,5 +26,4 @@ public class DataBase_instantiater implements CommandLineRunner {
 		
 		associateRepository.saveAll(Arrays.asList(maria, alex, bob));
 	}
-
 }
