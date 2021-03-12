@@ -33,6 +33,7 @@ public class DataBase_instantiater implements CommandLineRunner {
 		
 		associateRepository.deleteAll();
 		voteRepository.deleteAll();
+		guidelineRepository.deleteAll();
 		
 		Associate maria = new Associate(null, "Maria Brown", "maria@gmail.com");
 		Associate alex = new Associate(null, "Alex Green", "alex@gmail.com");
@@ -46,14 +47,24 @@ public class DataBase_instantiater implements CommandLineRunner {
 		guidelineRepository.saveAll(Arrays.asList(guideline1, guideline2));
 		
 		Vote vote1 = new Vote(null, VotingValue.NAO, new VoteForAgendaDTO(guideline1), new AuthorDTO(maria));
-		Vote vote2 = new Vote(null, VotingValue.SIM, new VoteForAgendaDTO(guideline2), new AuthorDTO(maria));	
+		Vote vote2 = new Vote(null, VotingValue.SIM, new VoteForAgendaDTO(guideline2), new AuthorDTO(maria));
+		Vote vote3 = new Vote(null, VotingValue.SIM, new VoteForAgendaDTO(guideline1), new AuthorDTO(alex));
+		Vote vote4 = new Vote(null, VotingValue.NAO, new VoteForAgendaDTO(guideline2), new AuthorDTO(alex));
+		Vote vote5 = new Vote(null, VotingValue.NAO, new VoteForAgendaDTO(guideline1), new AuthorDTO(bob));
+		Vote vote6 = new Vote(null, VotingValue.SIM, new VoteForAgendaDTO(guideline2), new AuthorDTO(bob));
 		
-		voteRepository.saveAll(Arrays.asList(vote1, vote2));
+		voteRepository.saveAll(Arrays.asList(vote1, vote2, vote3, vote4, vote5, vote6));
+		
 		maria.getVotes().addAll(Arrays.asList(vote1, vote2));
+		alex.getVotes().addAll(Arrays.asList(vote3, vote4));
+		bob.getVotes().addAll(Arrays.asList(vote5, vote6));
 		associateRepository.save(maria);
+		associateRepository.save(alex);
+		associateRepository.save(bob);
 		
-		guideline1.getVotes().add(vote1);
-		guideline2.getVotes().add(vote2);		
-		guidelineRepository.saveAll(Arrays.asList(guideline1, guideline2));
+		guideline1.getVotes().addAll(Arrays.asList(vote1, vote3, vote5));
+		guideline2.getVotes().addAll(Arrays.asList(vote2, vote4, vote6));		
+		guidelineRepository.save(guideline1);
+		guidelineRepository.save(guideline2);
 	}
 }

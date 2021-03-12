@@ -17,7 +17,7 @@ public class Vote implements Serializable {
 	private String id;
 	private VotingValue value;
 	private VoteForAgendaDTO forAgenda;
-	private AuthorDTO author;	
+	private AuthorDTO author;
 	
 	public Vote() {
 		

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -16,6 +17,8 @@ public class VotingSession implements Serializable{
 	private Date dateFinish;
 	
 	private Guideline guideline;
+	
+	@DBRef(lazy=true)
 	private List<Associate> associates = new ArrayList<>();
 	
 	public VotingSession() {
