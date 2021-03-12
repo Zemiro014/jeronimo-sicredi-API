@@ -1,13 +1,13 @@
 package com.jeronimo.sicredi_API.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.jeronimo.sicredi_API.domain.enums.VotingValue;
+import com.jeronimo.sicredi_API.dto.AuthorDTO;
+import com.jeronimo.sicredi_API.dto.VoteForAgendaDTO;
 
 @Document
 public class Vote implements Serializable {
@@ -16,18 +16,18 @@ public class Vote implements Serializable {
 	@Id
 	private String id;
 	private VotingValue value;
-	private Associate associate;
-	
-	private List<Guideline> guidelines = new ArrayList<>();
+	private VoteForAgendaDTO forAgenda;
+	private AuthorDTO author;	
 	
 	public Vote() {
 		
 	}
 
-	public Vote(String id, VotingValue value, Associate associate) {
+	public Vote(String id, VotingValue value, VoteForAgendaDTO forAgenda, AuthorDTO author) {
 		this.id = id;
 		this.value = value;
-		this.associate = associate;
+		this.forAgenda = forAgenda;
+		this.author = author;		
 	}
 
 	public String getId() {
@@ -45,22 +45,23 @@ public class Vote implements Serializable {
 	public void setValue(VotingValue value) {
 		this.value = value;
 	}
-
-	public Associate getAssociate() {
-		return associate;
-	}
-
-	public void setAssociate(Associate associate) {
-		this.associate = associate;
-	}
 	
-	public List<Guideline> getGuidelines() {
-		return guidelines;
+	public VoteForAgendaDTO getForAgenda() {
+		return forAgenda;
 	}
 
-	public void aGuidelines(List<Guideline> guidelines) {
-		this.guidelines = guidelines;
+	public void setForAgenda(VoteForAgendaDTO guideline) {
+		this.forAgenda = guideline;
 	}
+
+	public AuthorDTO getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(AuthorDTO author) {
+		this.author = author;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -86,5 +87,6 @@ public class Vote implements Serializable {
 			return false;
 		return true;
 	}
+
 	
 }

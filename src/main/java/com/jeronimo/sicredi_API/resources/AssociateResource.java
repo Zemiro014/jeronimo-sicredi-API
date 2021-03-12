@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jeronimo.sicredi_API.domain.Associate;
+import com.jeronimo.sicredi_API.domain.Vote;
 import com.jeronimo.sicredi_API.dto.AssociateDTO;
 import com.jeronimo.sicredi_API.services.AssociateService;
 
@@ -66,5 +67,13 @@ public class AssociateResource {
 		obj_associate.setId(id);
 		obj_associate = associateService.updateAssociateData(obj_associate);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}/votes", method=RequestMethod.GET)
+	public ResponseEntity<List<Vote>> findVotesOfAssociate(@PathVariable String id){
+		
+		Associate obj_associate = associateService.findById(id);
+		
+		return ResponseEntity.ok().body(obj_associate.getVotes());
 	}
 }

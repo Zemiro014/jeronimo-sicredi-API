@@ -1,8 +1,11 @@
 package com.jeronimo.sicredi_API.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="associate")
@@ -13,6 +16,9 @@ public class Associate implements Serializable{
 	private String id;
 	private String name;
 	private String email;
+	
+	@DBRef(lazy=true)
+	private List<Vote> votes = new ArrayList<>();
 	
 	public Associate() {
 		
@@ -48,6 +54,15 @@ public class Associate implements Serializable{
 		this.email = email;
 	}
 	
+
+	public List<Vote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -71,7 +86,6 @@ public class Associate implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
+	}	
 	
 }
