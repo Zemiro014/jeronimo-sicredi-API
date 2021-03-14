@@ -1,11 +1,8 @@
 package com.jeronimo.sicredi_API.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -15,20 +12,19 @@ public class VotingSession implements Serializable{
 	private String id;
 	private Date dateStart;
 	private Date dateFinish;
-	
+	private Associate associate;
 	private Guideline guideline;
-	
-	@DBRef(lazy=true)
-	private List<Associate> associates = new ArrayList<>();
 	
 	public VotingSession() {
 		
 	}
-
-	public VotingSession(String id, Date dateStart, Date dateFinish, Guideline guideline) {
+	
+	public VotingSession(String id, Date dateStart, Date dateFinish, Associate associate, Guideline guideline) {
+		super();
 		this.id = id;
 		this.dateStart = dateStart;
 		this.dateFinish = dateFinish;
+		this.associate = associate;
 		this.guideline = guideline;
 	}
 
@@ -40,9 +36,25 @@ public class VotingSession implements Serializable{
 		this.id = id;
 	}
 
+	public Guideline getGuideline() {
+		return guideline;
+	}
+
+	public void setGuideline(Guideline guideline) {
+		this.guideline = guideline;
+	}
+
 	public Date getDateStart() {
 		return dateStart;
 	}
+	
+	public Associate getAssociate() {
+		return associate;
+	}
+
+	public void setAssociate(Associate associate) {
+		this.associate = associate;
+	}	
 
 	public void setDateStart(Date dateStart) {
 		this.dateStart = dateStart;
@@ -54,22 +66,6 @@ public class VotingSession implements Serializable{
 
 	public void setDateFinish(Date dateFinish) {
 		this.dateFinish = dateFinish;
-	}
-
-	public Guideline getGuideline() {
-		return guideline;
-	}
-
-	public void setGuideline(Guideline guideline) {
-		this.guideline = guideline;
-	}
-
-	public List<Associate> getAssociates() {
-		return associates;
-	}
-
-	public void setAssociates(List<Associate> associates) {
-		this.associates = associates;
 	}
 
 	@Override

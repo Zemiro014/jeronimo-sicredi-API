@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -17,8 +16,7 @@ public class Guideline implements Serializable {
 	private String title;
 	private String description;
 	
-	@DBRef(lazy=true)
-	private List<Vote> votes = new ArrayList<>();
+	private List<String> votes = new ArrayList<>();
 	
 	public Guideline() {
 		
@@ -54,12 +52,15 @@ public class Guideline implements Serializable {
 		this.description = description;
 	}
 
-	public List<Vote> getVotes() {
+	public List<String> getVotes() {
 		return votes;
 	}
 
-	public void setVotes(List<Vote> votes) {
-		this.votes = votes;
+	public void setVotes(String vote) {
+		if(vote.equals("SIM") || vote.equals("NAO")) 
+		{
+			votes.add(vote);
+		}
 	}
 
 	@Override

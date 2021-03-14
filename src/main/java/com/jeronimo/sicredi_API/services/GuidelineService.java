@@ -26,7 +26,28 @@ public class GuidelineService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("A pauta especificada não existe no nosso sistema"));
 	}
 	
-	public GuidelineDTO converteGuidelineToGuidelineDTO(Guideline obj) {
-		return new GuidelineDTO(obj);
+	public Guideline inserNewGuideline(Guideline obj) {
+		return guidelineRepository.insert(obj);
+	}	
+	
+	public void deleteGuideline(String id) {
+		findGuidelineById(id);
+		guidelineRepository.deleteById(id);
 	}
+	
+	public Guideline updateGuidelineData(Guideline obj_ReceivedFromRequest) {
+		Guideline obj_toBeUpdated = findGuidelineById(obj_ReceivedFromRequest.getId());
+		updateExistentGuidelineDate(obj_toBeUpdated, obj_ReceivedFromRequest);
+		return guidelineRepository.save(obj_toBeUpdated);
+	}
+	
+	private void updateExistentGuidelineDate(Guideline obj_toBeUpdated, Guideline obj_ReceivedFromRequest) {
+		obj_toBeUpdated.setTitle(obj_ReceivedFromRequest.getTitle());
+		obj_toBeUpdated.setDescription(obj_ReceivedFromRequest.getDescription());
+	}
+	
+	public Guideline converteGuidelineDtoToGuideline(GuidelineDTO obj) {
+		return new Guideline(obj.getId(), obj.getTitle(), obj.getDescription());
+	}
+	
 }

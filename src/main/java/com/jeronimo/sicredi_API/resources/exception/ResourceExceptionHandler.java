@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.jeronimo.sicredi_API.services.eception.ObjectNotFoundException;
+import com.jeronimo.sicredi_API.services.eception.VotingNotAllowedException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -17,6 +18,14 @@ public class ResourceExceptionHandler {
 		
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError err = new StandardError(System.currentTimeMillis(), status.value(), "Não encontrado", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(VotingNotAllowedException.class)
+	public ResponseEntity<StandardError> votingNotAllowed(VotingNotAllowedException e, HttpServletRequest request){
+		
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		StandardError err = new StandardError(System.currentTimeMillis(), status.value(), "Voto negado", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 }

@@ -7,5 +7,5 @@ import com.jeronimo.sicredi_API.domain.VotingSession;
 
 @Repository
 public interface VotingSessionRepository extends MongoRepository<VotingSession, String>{
-
+	
 }
