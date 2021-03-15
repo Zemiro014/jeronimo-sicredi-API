@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.dto.GuidelineDTO;
+import com.jeronimo.sicredi_API.dto.VotingResultDTO;
 import com.jeronimo.sicredi_API.services.GuidelineService;
 
 @RestController
@@ -35,10 +36,10 @@ public class GuidelineResource {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<GuidelineDTO> findGuidelineById(@PathVariable String id){
+	public ResponseEntity<VotingResultDTO> findGuidelineById(@PathVariable String id){
 		
 		Guideline obj_guideline = guidelineService.findGuidelineById(id);		
-		return ResponseEntity.ok().body(new GuidelineDTO(obj_guideline));
+		return ResponseEntity.ok().body(new VotingResultDTO(obj_guideline));
 	}
 
 	
