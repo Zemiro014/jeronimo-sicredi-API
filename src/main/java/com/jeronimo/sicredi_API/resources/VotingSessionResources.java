@@ -18,21 +18,21 @@ import com.jeronimo.sicredi_API.dto.VotingSessionDTO;
 import com.jeronimo.sicredi_API.services.VotingSessionService;
 
 @RestController
-@RequestMapping(value="/votingSession")
+@RequestMapping(value="/votingSessions")
 public class VotingSessionResources {
 	
 	@Autowired
 	private VotingSessionService votingSessionService;
 
 	@GetMapping
-	public ResponseEntity<List<VotingSessionDTO>> findAllAssociates(){
+	public ResponseEntity<List<VotingSessionDTO>> findAllVotingSession(){
 		
 		List<VotingSession> list = votingSessionService.findAll();
 		List<VotingSessionDTO> list_Dto = list.stream().map(x -> new VotingSessionDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(list_Dto);
 	}
 	
-	@RequestMapping(value="/{id}/votes", method=RequestMethod.POST)
+	@RequestMapping(value="/{id}/vote", method=RequestMethod.POST)
 	public ResponseEntity<Void> voteGuideline(@RequestBody VotingDTO objDtoFromRequest, @PathVariable String id)
 	{	
 		objDtoFromRequest.setGuidelineId(id);

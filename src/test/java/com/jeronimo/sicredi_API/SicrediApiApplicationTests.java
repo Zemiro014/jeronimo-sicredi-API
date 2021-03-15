@@ -31,7 +31,7 @@ class SicrediApiApplicationTests {
 	List<Associate> list = new ArrayList<>();
 	
 	@Test
-	public void associateService() throws Exception {
+	public void findAllAssociateService() throws Exception {
 		when(service.findAll()).thenReturn(list);
 		this.mockMvc.perform(get("/associates")).andDo(print()).andExpect(status().isOk());
 				//.andExpect(content().string(containsString("Hello, Mock")));

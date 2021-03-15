@@ -44,7 +44,7 @@ public class GuidelineResource {
 
 	
 	@RequestMapping(value="/{id}/votes", method=RequestMethod.GET)
-	public ResponseEntity<List<String>> findVotesOfAssociate(@PathVariable String id){
+	public ResponseEntity<List<String>> getVotesOfGuideline(@PathVariable String id){
 		
 		Guideline obj_guideline = guidelineService.findGuidelineById(id);
 		return ResponseEntity.ok().body(obj_guideline.getVotes());
