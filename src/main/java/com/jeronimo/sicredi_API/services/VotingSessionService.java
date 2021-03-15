@@ -13,7 +13,7 @@ import com.jeronimo.sicredi_API.domain.VotingSession;
 import com.jeronimo.sicredi_API.dto.VotingDTO;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
 import com.jeronimo.sicredi_API.repositories.VotingSessionRepository;
-import com.jeronimo.sicredi_API.services.eception.VotingNotAllowedException;
+import com.jeronimo.sicredi_API.services.exception.VotingNotAllowedException;
 
 @Service
 public class VotingSessionService {
@@ -43,14 +43,21 @@ public class VotingSessionService {
 			VotingSession resul = voteSessionRepository.searchExistentVote(guideline.getId(), associate.getId());
 			
 			if(resul == null) 
-			{
-				VotingSession votingSession = new VotingSession(null,sdf.parse("13/03/2021 16:50:00"),sdf.parse("13/03/2021 16:54:00"), associate, guideline);
-				voteSessionRepository.insert(votingSession);
-				
-				guideline.setVotes(obj.getVote());
-				guidelineRepository.save(guideline);		
-				
-				return votingSession;
+			{				
+				if(obj.getVote().equals("SIM") || obj.getVote().equals("NAO")) 
+				{
+					VotingSession votingSession = new VotingSession(null,sdf.parse("13/03/2021 16:50:00"),sdf.parse("13/03/2021 16:54:00"), associate, guideline);
+					voteSessionRepository.insert(votingSession);
+					
+					guideline.setVotes(obj.getVote());
+					guidelineRepository.save(guideline);		
+					
+					return votingSession;
+				}
+				else 
+				{
+					throw new VotingNotAllowedException("O valor do voto não é permitido. Escreva SIM ou NAO !!");
+				}				
 			}
 			else 
 			{

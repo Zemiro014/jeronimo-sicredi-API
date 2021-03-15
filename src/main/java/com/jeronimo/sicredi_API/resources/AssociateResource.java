@@ -67,14 +67,4 @@ public class AssociateResource {
 		obj_associate = associateService.updateAssociateData(obj_associate);
 		return ResponseEntity.noContent().build();
 	}
-	
-	/*
-	@RequestMapping(value="/{id}/votes", method=RequestMethod.GET)
-	public ResponseEntity<List<Vote>> findVotesOfAssociate(@PathVariable String id){
-		
-		Associate obj_associate = associateService.findById(id);
-		
-		return ResponseEntity.ok().body(obj_associate.getVotes());
-	}
-	*/
 }

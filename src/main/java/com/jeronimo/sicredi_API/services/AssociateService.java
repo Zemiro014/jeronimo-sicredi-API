@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.dto.AssociateDTO;
 import com.jeronimo.sicredi_API.repositories.AssociateRepository;
-import com.jeronimo.sicredi_API.services.eception.ObjectNotFoundException;
+import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
 public class AssociateService {

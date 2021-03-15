@@ -13,6 +13,9 @@ public class VotingResultDTO implements Serializable{
 	private String title;
 	private String description;	
 	private int quantityVotes;
+	private int approved;
+	private int rejected;
+	private String status;
 	private List<String> votes = new ArrayList<>();
 	
 	public VotingResultDTO(Guideline obj) {
@@ -45,7 +48,7 @@ public class VotingResultDTO implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
+	}	
 
 	public int getQuantityVotes() {
 		return quantityVotes;
@@ -54,6 +57,23 @@ public class VotingResultDTO implements Serializable{
 	public void setQuantityVotes(int quantityVotes) {
 		this.quantityVotes = quantityVotes;
 	}
+	
+	public int getApproved() {
+		return approved;
+	}
+
+	public void setApproved(int approved) {
+		this.approved = approved;
+	}
+
+	public int getRejected() {
+		return rejected;
+	}
+
+	public void setRejected(int rejected) {
+		this.rejected = rejected;
+	}
+
 
 	public List<String> getVotes() {
 		return votes;
@@ -61,6 +81,51 @@ public class VotingResultDTO implements Serializable{
 
 	public void setVotes(List<String> votes) {
 		this.votes = votes;
-	}	
+		calculatingStateVoting(this.votes);
+		
+	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String state) {
+		this.status = state;
+	}
+	
+	private void calculatingStateVoting(List<String> votes) {
+		int sim = 0;
+		int nao = 0;
+		
+		if(votes == null) 
+		{
+			setStatus("Esta pauta não possui nenhuma votação");
+		}
+		else 
+		{
+			for(String vote : votes) 
+			{
+				if(vote.equals("SIM")) 
+				{
+					sim += 1;
+				}
+				else 
+				{
+					nao += 1;
+				}
+			}
+			if(sim > nao) {
+				setStatus("APROVADA");
+			}
+			else if(sim == nao)
+			{
+				setStatus("EMPATADA");
+			}
+			else {
+				setStatus("REPROVADA");
+			}
+		}
+		setApproved(sim);
+		setRejected(nao);
+	}
 }

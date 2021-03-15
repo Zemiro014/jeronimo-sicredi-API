@@ -57,10 +57,7 @@ public class Guideline implements Serializable {
 	}
 
 	public void setVotes(String vote) {
-		if(vote.equals("SIM") || vote.equals("NAO")) 
-		{
 			votes.add(vote);
-		}
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.dto.GuidelineDTO;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
-import com.jeronimo.sicredi_API.services.eception.ObjectNotFoundException;
+import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
 public class GuidelineService {

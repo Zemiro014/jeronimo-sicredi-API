@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.jeronimo.sicredi_API.services.eception.ObjectNotFoundException;
-import com.jeronimo.sicredi_API.services.eception.VotingNotAllowedException;
+import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
+import com.jeronimo.sicredi_API.services.exception.VotingNotAllowedException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {

@@ -1,4 +1,4 @@
-package com.jeronimo.sicredi_API.services.eception;
+package com.jeronimo.sicredi_API.services.exception;
 
 public class ObjectNotFoundException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
