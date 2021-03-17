@@ -14,6 +14,7 @@ import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.domain.VotingSession;
 import com.jeronimo.sicredi_API.dto.VotingDTO;
+import com.jeronimo.sicredi_API.listener.exception.ObjectNullException;
 import com.jeronimo.sicredi_API.listener.exception.VotingNotAllowedException;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
 import com.jeronimo.sicredi_API.repositories.VotingSessionRepository;
@@ -44,14 +45,23 @@ public class VotingSessionConsumer {
 	@KafkaListener(topics = "votingSession", groupId = "group_json", containerFactory = "votingSessionKafkaListenerFactory")
 	public void consumeJson(VotingSession votingSession) {
 		logger.info(String.format("Consumed JSON message -> %s",votingSession));
-		voteSessionRepository.save(votingSession);
+		inserNewVotingSession(votingSession);
+	}
+	
+	public void inserNewVotingSession(VotingSession obj) {
+		if(obj==null)
+			throw new ObjectNullException("Ação de abrir nova sessão de voto foi negada porque o objecto passado é null");
+		voteSessionRepository.insert(obj);
 	}
 	
 	public List<VotingSession> findAll() {		
 		return voteSessionRepository.findAll();
 	}
 	
-	public VotingSession voteGuideline(VotingDTO obj) {		
+	public VotingSession voteGuideline(VotingDTO obj) {
+		if(obj==null)
+			throw new ObjectNullException("Ação de votar uma pauta foi negada porque o objecto passado é null");
+		
 		Associate associate = associateConsumer.findById(obj.getAssociateId());
 		Guideline guideline = guidelineConsumer.findGuidelineById(obj.getGuidelineId());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

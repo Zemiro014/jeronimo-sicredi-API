@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.dto.GuidelineDTO;
 import com.jeronimo.sicredi_API.listener.exception.ObjectNotFoundException;
+import com.jeronimo.sicredi_API.listener.exception.ObjectNullException;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class GuidelineConsumer {
 	@KafkaListener(topics = "guideline", groupId = "group_json", containerFactory = "guidelineKafkaListenerFactory")
 	public void consumeJson(GuidelineDTO guidelineDto) {
 		logger.info(String.format("Consumed JSON message -> %s",guidelineDto));
-		guidelineRepository.save(converteGuidelineDtoToGuideline(guidelineDto));
+		inserNewGuideline(converteGuidelineDtoToGuideline(guidelineDto));
 	}
 	
 	public List<Guideline> findAllGuideline(){
@@ -43,6 +44,8 @@ public class GuidelineConsumer {
 	}
 	
 	public Guideline inserNewGuideline(Guideline obj) {
+		if(obj==null)
+			throw new ObjectNullException("Ação de inserir nova pauta foi negada porque o objecto passado é null");
 		return guidelineRepository.insert(obj);
 	}	
 	
