@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,13 @@ import com.jeronimo.sicredi_API.dto.GuidelineDTO;
 import com.jeronimo.sicredi_API.dto.VotingResultDTO;
 import com.jeronimo.sicredi_API.kafka.listener.GuidelineConsumer;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value="/guidelines")
+@Api(value="API REST guideline (subject) -Pautas-")
+@CrossOrigin(origins="*")
 public class GuidelineResource {
 
 	private GuidelineConsumer guidelineConsumer;
@@ -32,6 +38,7 @@ public class GuidelineResource {
 	}
 	
 	@GetMapping
+	@ApiOperation(value="This method returns all existing guideline (subject) -Pautas- in mongoDB")
 	public ResponseEntity<List<GuidelineDTO>> findAllAssociates(){
 		
 		List<Guideline> list = guidelineConsumer.findAllGuideline();
@@ -40,6 +47,8 @@ public class GuidelineResource {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@ApiOperation(value="This method returns the guideline (subject) -Pautas- that corresponds to the specified Id. "
+			+ "It brings with it the voting results of the agenda corresponding to the Id")
 	public ResponseEntity<VotingResultDTO> findGuidelineById(@PathVariable String id){
 		
 		Guideline obj_guideline = guidelineConsumer.findGuidelineById(id);		
@@ -48,6 +57,7 @@ public class GuidelineResource {
 
 	
 	@RequestMapping(value="/{id}/votes", method=RequestMethod.GET)
+	@ApiOperation(value="This method returns guideline (subject) -Pautas- votes of guideline that corresponds to the specified Id")
 	public ResponseEntity<List<String>> getVotesOfGuideline(@PathVariable String id){
 		
 		Guideline obj_guideline = guidelineConsumer.findGuidelineById(id);
@@ -55,6 +65,8 @@ public class GuidelineResource {
 	}
 	
 	@PostMapping
+	@ApiOperation(value="This method allows inserting a new guideline (subject) -Pautas- in system, "
+			+ "inform in your body the values ​​of the fields: title and description")
 	public ResponseEntity<Void> insertNewGuideline(@RequestBody GuidelineDTO objDtoFromRequest){
 		Guideline obj = guidelineConsumer.converteGuidelineDtoToGuideline(objDtoFromRequest);
 		obj = guidelineConsumer.inserNewGuideline(obj);
@@ -63,6 +75,7 @@ public class GuidelineResource {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@ApiOperation(value="This method allow to delete the guideline (subject) -Pautas- that corresponds to the specified Id")
 	public ResponseEntity<Void> deleteGuidelineById(@PathVariable String id){
 		guidelineConsumer.deleteGuideline(id);
 		return ResponseEntity.noContent().build();
