@@ -1,9 +1,13 @@
-package com.jeronimo.sicredi_API.services;
+package com.jeronimo.sicredi_API.kafka.listener;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Guideline;
@@ -12,10 +16,22 @@ import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
 import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
-public class GuidelineService {
+public class GuidelineConsumer {
 
+	private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 	@Autowired
-	private GuidelineRepository guidelineRepository;
+	GuidelineRepository guidelineRepository;
+
+	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
+	public void consume(String message) {
+		logger.info(String.format("Consumed message -> %s",message));
+	}
+
+	@KafkaListener(topics = "Kafka_Guideline_json", groupId = "group_json", containerFactory = "guidelineKafkaListenerFactory")
+	public void consumeJson(GuidelineDTO guidelineDto) {
+		logger.info(String.format("Consumed JSON message -> %s",guidelineDto));
+		guidelineRepository.save(converteGuidelineDtoToGuideline(guidelineDto));
+	}
 	
 	public List<Guideline> findAllGuideline(){
 		return guidelineRepository.findAll();
@@ -49,5 +65,4 @@ public class GuidelineService {
 	public Guideline converteGuidelineDtoToGuideline(GuidelineDTO obj) {
 		return new Guideline(obj.getId(), obj.getTitle(), obj.getDescription());
 	}
-	
 }

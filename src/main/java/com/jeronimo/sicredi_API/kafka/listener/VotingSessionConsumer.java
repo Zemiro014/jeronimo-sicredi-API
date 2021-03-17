@@ -1,10 +1,13 @@
-package com.jeronimo.sicredi_API.services;
+package com.jeronimo.sicredi_API.kafka.listener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Associate;
@@ -16,8 +19,10 @@ import com.jeronimo.sicredi_API.repositories.VotingSessionRepository;
 import com.jeronimo.sicredi_API.services.exception.VotingNotAllowedException;
 
 @Service
-public class VotingSessionService {
+public class VotingSessionConsumer {
 
+	private static final Logger logger = LoggerFactory.getLogger(VotingSessionConsumer.class);
+	
 	@Autowired
 	private VotingSessionRepository voteSessionRepository;
 	
@@ -25,18 +30,29 @@ public class VotingSessionService {
 	private GuidelineRepository guidelineRepository;
 	
 	@Autowired
-	private GuidelineService guidelineService;
+	private GuidelineConsumer guidelineConsumer;
 	
 	@Autowired
-	private AssociateService associateService;
+	private AssociateConsumer associateConsumer;
+
+	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
+	public void consume(String message) {
+		logger.info(String.format("Consumed message -> %s",message));
+	}
+
+	@KafkaListener(topics = "Kafka_VotingSession_json", groupId = "group_json", containerFactory = "votingSessionKafkaListenerFactory")
+	public void consumeJson(VotingSession votingSession) {
+		logger.info(String.format("Consumed JSON message -> %s",votingSession));
+		voteSessionRepository.save(votingSession);
+	}
 	
 	public List<VotingSession> findAll() {		
 		return voteSessionRepository.findAll();
 	}
 	
 	public VotingSession voteGuideline(VotingDTO obj) {		
-		Associate associate = associateService.findById(obj.getAssociateId());
-		Guideline guideline = guidelineService.findGuidelineById(obj.getGuidelineId());
+		Associate associate = associateConsumer.findById(obj.getAssociateId());
+		Guideline guideline = guidelineConsumer.findGuidelineById(obj.getGuidelineId());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		try 
 		{	
@@ -71,4 +87,5 @@ public class VotingSessionService {
 		}		
 		return null;
 	}
+	
 }

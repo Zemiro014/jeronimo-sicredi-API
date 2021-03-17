@@ -1,9 +1,12 @@
-package com.jeronimo.sicredi_API.services;
+package com.jeronimo.sicredi_API.kafka.listener;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Associate;
@@ -12,10 +15,23 @@ import com.jeronimo.sicredi_API.repositories.AssociateRepository;
 import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
-public class AssociateService {
+public class AssociateConsumer {
+
+	private static final Logger logger = LoggerFactory.getLogger(AssociateConsumer.class);
 	
 	@Autowired
-	private AssociateRepository associateRepository;
+	AssociateRepository associateRepository;
+
+	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
+	public void consume(String message) {
+		logger.info(String.format("Consumed message -> %s",message));
+	}
+
+	@KafkaListener(topics = "Kafka_Associate_json", groupId = "group_json", containerFactory = "associateKafkaListenerFactory")
+	public void consumeJson(Associate associate) {
+		logger.info(String.format("Consumed JSON message -> %s",associate));
+		associateRepository.save(associate);
+	}
 	
 	public List<Associate> findAll()
 	{
@@ -46,7 +62,7 @@ public class AssociateService {
 		obj_toBeUpdated.setName(obj_ReceivedFromRequest.getName());
 		obj_toBeUpdated.setEmail(obj_ReceivedFromRequest.getEmail());		
 	}
-
+	
 	public Associate convertAssociateDtoFromAssociate(AssociateDTO obj_Dto) {
 		return new Associate(obj_Dto.getId(),obj_Dto.getName(),obj_Dto.getEmail());		
 	}

@@ -72,6 +72,11 @@ public class Associate implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Associate [id=" + id + ", name=" + name + ", email=" + email + "]";
 	}	
 	
 }

@@ -16,14 +16,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.dto.AssociateDTO;
-import com.jeronimo.sicredi_API.services.AssociateService;
+import com.jeronimo.sicredi_API.kafka.listener.AssociateConsumer;
 
 @RestController
 @RequestMapping(value="/associates")
 public class AssociateResource {
-
+	
+	private AssociateConsumer associateService;
+	
 	@Autowired
-	private AssociateService associateService;
+	public AssociateResource(AssociateConsumer associateService) {
+		this.associateService = associateService;
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<AssociateDTO>> findAllAssociates(){

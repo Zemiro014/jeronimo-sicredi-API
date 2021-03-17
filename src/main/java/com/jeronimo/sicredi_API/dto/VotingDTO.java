@@ -51,7 +51,14 @@ public class VotingDTO implements Serializable {
 
 	public void setVote(String vote) {
 		this.vote = vote;
+	}
+
+	@Override
+	public String toString() {
+		return "VotingDTO [id=" + id + ", associateId=" + associateId + ", guidelineId=" + guidelineId + ", vote="
+				+ vote + "]";
 	}	
+	
 	
 	
 }
