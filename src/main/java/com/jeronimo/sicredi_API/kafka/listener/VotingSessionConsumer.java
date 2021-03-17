@@ -49,8 +49,6 @@ public class VotingSessionConsumer {
 	}
 	
 	public void inserNewVotingSession(VotingSession obj) {
-		if(obj==null)
-			throw new ObjectNullException("Ação de abrir nova sessão de voto foi negada porque o objecto passado é null");
 		voteSessionRepository.insert(obj);
 	}
 	

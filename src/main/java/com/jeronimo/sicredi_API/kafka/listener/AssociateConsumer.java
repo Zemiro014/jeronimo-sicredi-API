@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.dto.AssociateDTO;
 import com.jeronimo.sicredi_API.listener.exception.ObjectNotFoundException;
-import com.jeronimo.sicredi_API.listener.exception.ObjectNullException;
 import com.jeronimo.sicredi_API.repositories.AssociateRepository;
 
 @Service
@@ -32,7 +31,7 @@ public class AssociateConsumer {
 	@KafkaListener(topics = "associate", groupId = "group_json", containerFactory = "associateKafkaListenerFactory")
 	public void consumeJson(Associate associate) {
 		logger.info(String.format("Consuming new associate in JSON. Data:-> %s",associate));
-		insertAssociate(associate);
+			insertAssociate(associate);
 	}
 	
 	public List<Associate> findAll()
@@ -46,8 +45,6 @@ public class AssociateConsumer {
 	}
 	
 	public Associate insertAssociate(Associate obj) {
-		if(obj==null)
-			throw new ObjectNullException("Ação de inserir novo associado foi negada porque o objecto passado é null");
 		return associateRepository.insert(obj);
 	}
 	

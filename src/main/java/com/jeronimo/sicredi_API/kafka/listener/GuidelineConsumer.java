@@ -44,8 +44,6 @@ public class GuidelineConsumer {
 	}
 	
 	public Guideline inserNewGuideline(Guideline obj) {
-		if(obj==null)
-			throw new ObjectNullException("Ação de inserir nova pauta foi negada porque o objecto passado é null");
 		return guidelineRepository.insert(obj);
 	}	
 	

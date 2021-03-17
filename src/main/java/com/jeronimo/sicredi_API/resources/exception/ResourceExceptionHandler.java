@@ -22,7 +22,7 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 	}
 	
-	@ExceptionHandler(ObjectNotFoundException.class)
+	@ExceptionHandler(VotingNotAllowedException.class)
 	public ResponseEntity<StandardError> votingNotAllowed(VotingNotAllowedException e, HttpServletRequest request){
 		
 		HttpStatus status = HttpStatus.FORBIDDEN;
