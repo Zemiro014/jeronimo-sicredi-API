@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.dto.AssociateDTO;
+import com.jeronimo.sicredi_API.listener.exception.ObjectNotFoundException;
 import com.jeronimo.sicredi_API.repositories.AssociateRepository;
-import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
 public class AssociateConsumer {
@@ -22,14 +22,15 @@ public class AssociateConsumer {
 	@Autowired
 	AssociateRepository associateRepository;
 
+	/*
 	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
 	public void consume(String message) {
 		logger.info(String.format("Consumed message -> %s",message));
 	}
-
-	@KafkaListener(topics = "Kafka_Associate_json", groupId = "group_json", containerFactory = "associateKafkaListenerFactory")
+*/
+	@KafkaListener(topics = "associate", groupId = "group_json", containerFactory = "associateKafkaListenerFactory")
 	public void consumeJson(Associate associate) {
-		logger.info(String.format("Consumed JSON message -> %s",associate));
+		logger.info(String.format("Consuming new associate in JSON. Data:-> %s",associate));
 		associateRepository.save(associate);
 	}
 	

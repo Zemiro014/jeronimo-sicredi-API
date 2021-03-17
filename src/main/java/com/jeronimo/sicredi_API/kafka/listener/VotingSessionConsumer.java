@@ -14,9 +14,9 @@ import com.jeronimo.sicredi_API.domain.Associate;
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.domain.VotingSession;
 import com.jeronimo.sicredi_API.dto.VotingDTO;
+import com.jeronimo.sicredi_API.listener.exception.VotingNotAllowedException;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
 import com.jeronimo.sicredi_API.repositories.VotingSessionRepository;
-import com.jeronimo.sicredi_API.services.exception.VotingNotAllowedException;
 
 @Service
 public class VotingSessionConsumer {
@@ -35,12 +35,13 @@ public class VotingSessionConsumer {
 	@Autowired
 	private AssociateConsumer associateConsumer;
 
+	/*
 	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
 	public void consume(String message) {
 		logger.info(String.format("Consumed message -> %s",message));
 	}
-
-	@KafkaListener(topics = "Kafka_VotingSession_json", groupId = "group_json", containerFactory = "votingSessionKafkaListenerFactory")
+*/
+	@KafkaListener(topics = "votingSession", groupId = "group_json", containerFactory = "votingSessionKafkaListenerFactory")
 	public void consumeJson(VotingSession votingSession) {
 		logger.info(String.format("Consumed JSON message -> %s",votingSession));
 		voteSessionRepository.save(votingSession);

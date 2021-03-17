@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.jeronimo.sicredi_API.domain.Guideline;
 import com.jeronimo.sicredi_API.dto.GuidelineDTO;
+import com.jeronimo.sicredi_API.listener.exception.ObjectNotFoundException;
 import com.jeronimo.sicredi_API.repositories.GuidelineRepository;
-import com.jeronimo.sicredi_API.services.exception.ObjectNotFoundException;
 
 @Service
 public class GuidelineConsumer {
@@ -21,13 +21,13 @@ public class GuidelineConsumer {
 	private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 	@Autowired
 	GuidelineRepository guidelineRepository;
-
+/*
 	@KafkaListener(topics = "Kafka_Example", groupId = "group_id")
 	public void consume(String message) {
 		logger.info(String.format("Consumed message -> %s",message));
 	}
-
-	@KafkaListener(topics = "Kafka_Guideline_json", groupId = "group_json", containerFactory = "guidelineKafkaListenerFactory")
+*/
+	@KafkaListener(topics = "guideline", groupId = "group_json", containerFactory = "guidelineKafkaListenerFactory")
 	public void consumeJson(GuidelineDTO guidelineDto) {
 		logger.info(String.format("Consumed JSON message -> %s",guidelineDto));
 		guidelineRepository.save(converteGuidelineDtoToGuideline(guidelineDto));
